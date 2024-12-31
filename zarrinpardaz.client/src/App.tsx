@@ -4,12 +4,13 @@ import { fetchCustomers } from './services/api';
 import { CustomerGrid } from './components/CustomerGrid';
 import { AddCustomerForm } from './components/AddCustomerForm';
 import { TransactionPage } from './pages/TransactionPage';
-import { Users, Scale } from 'lucide-react';
+import { TransactionReportPage } from './pages/TransactionReportPage';
+import { Users, Scale, FileText } from 'lucide-react';
 
 function App() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [error, setError] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<'customers' | 'transactions'>('customers');
+  const [currentPage, setCurrentPage] = useState<'customers' | 'transactions' | 'reports'>('customers');
 
   useEffect(() => {
     loadCustomers();
@@ -52,6 +53,17 @@ function App() {
                 <Scale className="w-5 h-5 ml-2" />
                 ثبت تراکنش
               </button>
+              <button
+                onClick={() => setCurrentPage('reports')}
+                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                  currentPage === 'reports'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                <FileText className="w-5 h-5 ml-2" />
+                گزارش تراکنش‌ها
+              </button>
             </div>
           </div>
         </div>
@@ -65,7 +77,7 @@ function App() {
         </div>
       )}
 
-      {currentPage === 'customers' ? (
+      {currentPage === 'customers' && (
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
@@ -78,8 +90,14 @@ function App() {
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      
+      {currentPage === 'transactions' && (
         <TransactionPage customers={customers} />
+      )}
+
+      {currentPage === 'reports' && (
+        <TransactionReportPage customers={customers} />
       )}
     </div>
   );
