@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { NewCustomer } from '../types/customer';
 import { UserPlus } from 'lucide-react';
+import { addCustomer } from '../services/api';
 
 interface AddCustomerFormProps {
   onSubmit: (customer: NewCustomer) => Promise<void>;
 }
 
 export const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onSubmit }) => {
+
   const [formData, setFormData] = useState<NewCustomer>({
     name: '',
     email: '',
@@ -15,7 +17,8 @@ export const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onSubmit }) =>
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+      e.preventDefault();
+      addCustomer(formData);
     await onSubmit(formData);
     setFormData({ name: '', email: '', phone: '', address: '' });
   };
@@ -69,7 +72,7 @@ export const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onSubmit }) =>
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           ثبت مشتری
         </button>

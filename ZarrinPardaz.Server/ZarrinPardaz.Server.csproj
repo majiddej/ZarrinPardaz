@@ -10,9 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZarrinPardaz.Application.Contract\ZarrinPardaz.Application.Contract.csproj" />
+    <ProjectReference Include="..\ZarrinPardaz.Application\ZarrinPardaz.Application.csproj" />
     <ProjectReference Include="..\zarrinpardaz.client\zarrinpardaz.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\ZarrinPardaz.Domain\ZarrinPardaz.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

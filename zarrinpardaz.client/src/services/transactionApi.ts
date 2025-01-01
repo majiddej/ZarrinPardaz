@@ -1,6 +1,6 @@
 import { GoldTransaction, NewGoldTransaction, TransactionFilters } from '../types/transaction';
 
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = 'https://localhost:7180'; // Replace with your actual API URL
 
 export const createTransaction = async (transaction: NewGoldTransaction): Promise<GoldTransaction> => {
   const response = await fetch(`${API_BASE_URL}/transactions`, {

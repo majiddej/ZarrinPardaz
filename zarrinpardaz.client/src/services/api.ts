@@ -1,13 +1,14 @@
 import { Customer, NewCustomer } from '../types/customer';
 
-const API_BASE_URL = 'https://api.example.com'; // Replace with your actual API URL
+const API_BASE_URL = 'https://localhost:7180'; // Replace with your actual API URL
 
 export const fetchCustomers = async (): Promise<Customer[]> => {
   const response = await fetch(`${API_BASE_URL}/customers`);
   if (!response.ok) {
     throw new Error('Failed to fetch customers');
   }
-  return response.json();
+    //var t = response.json();
+    return await response.json();
 };
 
 export const addCustomer = async (customer: NewCustomer): Promise<Customer> => {
@@ -21,5 +22,5 @@ export const addCustomer = async (customer: NewCustomer): Promise<Customer> => {
   if (!response.ok) {
     throw new Error('Failed to add customer');
   }
-  return response.json();
+  return await response.json();
 };
