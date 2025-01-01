@@ -1,6 +1,8 @@
 import React from 'react';
 import { Customer } from '../types/customer';
 import { Table } from 'lucide-react';
+import Lottie from 'lottie-react';
+import usersAnimation from './animations/users.json';
 
 interface CustomerGridProps {
   customers: Customer[];
@@ -11,7 +13,9 @@ export const CustomerGrid: React.FC<CustomerGridProps> = ({ customers }) => {
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center gap-2 mb-4">
         <Table className="w-5 h-5" />
-        <h2 className="text-xl font-semibold">لیست مشتریان</h2>
+              <h2 className="text-xl font-semibold">لیست مشتریان</h2>
+              <Lottie animationData={usersAnimation} loop={true} />
+
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-right">

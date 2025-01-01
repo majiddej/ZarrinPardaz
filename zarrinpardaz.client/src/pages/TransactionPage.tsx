@@ -6,6 +6,8 @@ import { CustomerSelect } from '../components/transactions/CustomerSelect';
 import { TransactionTypeSelect } from '../components/transactions/TransactionTypeSelect';
 import { WeightInput } from '../components/transactions/WeightInput';
 import { Scale } from 'lucide-react';
+import { LoadingSpinner } from '../components/animations/LoadingSpinner';
+import { SuccessCheck } from '../components/animations/SuccessCheck';
 
 interface TransactionPageProps {
   customers: Customer[];
@@ -17,14 +19,18 @@ export const TransactionPage: React.FC<TransactionPageProps> = ({ customers }) =
   const [weight, setWeight] = useState<number>(0);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true);
 
     if (!customerId) {
       setError('لطفاً مشتری را انتخاب کنید');
+      setLoading(false);
       return;
     }
 
@@ -36,14 +42,20 @@ export const TransactionPage: React.FC<TransactionPageProps> = ({ customers }) =
       };
 
       await createTransaction(transaction);
+      setShowSuccess(true);
       setSuccess('تراکنش با موفقیت ثبت شد');
       
-      // Reset form
-      setCustomerId('');
-      setTransactionType('buy');
-      setWeight(0);
+      // Reset form after animation completes
+      setTimeout(() => {
+        setCustomerId('');
+        setTransactionType('buy');
+        setWeight(0);
+        setShowSuccess(false);
+      }, 2000);
     } catch (err) {
       setError('خطا در ثبت تراکنش');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,36 +74,41 @@ export const TransactionPage: React.FC<TransactionPageProps> = ({ customers }) =
             </div>
           )}
 
-          {success && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-              {success}
+          {success && showSuccess && (
+            <div className="text-center">
+              <SuccessCheck />
+              <p className="text-green-600 mt-2">{success}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <CustomerSelect
-              customers={customers}
-              selectedCustomerId={customerId}
-              onChange={setCustomerId}
-            />
-            
-            <TransactionTypeSelect
-              value={transactionType}
-              onChange={setTransactionType}
-            />
-            
-            <WeightInput
-              value={weight}
-              onChange={setWeight}
-            />
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <CustomerSelect
+                customers={customers}
+                selectedCustomerId={customerId}
+                onChange={setCustomerId}
+              />
+              
+              <TransactionTypeSelect
+                value={transactionType}
+                onChange={setTransactionType}
+              />
+              
+              <WeightInput
+                value={weight}
+                onChange={setWeight}
+              />
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              ثبت تراکنش
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                ثبت تراکنش
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

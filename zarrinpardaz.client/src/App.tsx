@@ -5,7 +5,7 @@ import { CustomerGrid } from './components/CustomerGrid';
 import { AddCustomerForm } from './components/AddCustomerForm';
 import { TransactionPage } from './pages/TransactionPage';
 import { TransactionReportPage } from './pages/TransactionReportPage';
-import { Users, Scale, FileText } from 'lucide-react';
+import { Header } from './components/layout/Header';
 
 function App() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -27,47 +27,7 @@ function App() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex space-x-8 space-x-reverse">
-              <button
-                onClick={() => setCurrentPage('customers')}
-                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                  currentPage === 'customers'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                <Users className="w-5 h-5 ml-2" />
-                مدیریت مشتریان
-              </button>
-              <button
-                onClick={() => setCurrentPage('transactions')}
-                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                  currentPage === 'transactions'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                <Scale className="w-5 h-5 ml-2" />
-                ثبت تراکنش
-              </button>
-              <button
-                onClick={() => setCurrentPage('reports')}
-                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                  currentPage === 'reports'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                <FileText className="w-5 h-5 ml-2" />
-                گزارش تراکنش‌ها
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Header currentPage={currentPage} onPageChange={setCurrentPage} />
 
       {error && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">

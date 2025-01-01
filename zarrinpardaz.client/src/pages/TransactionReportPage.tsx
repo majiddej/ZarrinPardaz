@@ -6,6 +6,8 @@ import { fetchTransactions } from '../services/transactionApi';
 import { CustomerSelect } from '../components/transactions/CustomerSelect';
 import { DateRangeSelector } from '../components/reports/DateRangeSelector';
 import { TransactionTable } from '../components/reports/TransactionTable';
+import { LoadingSpinner } from '../components/animations/LoadingSpinner';
+import { EmptyState } from '../components/animations/EmptyState';
 
 interface TransactionReportPageProps {
   customers: Customer[];
@@ -22,11 +24,14 @@ export const TransactionReportPage: React.FC<TransactionReportPageProps> = ({ cu
   const [transactions, setTransactions] = useState<GoldTransaction[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+ const [selectedDay, setSelectedDay] = useState(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    setHasSearched(true);
 
     try {
       const filters = {
@@ -59,7 +64,7 @@ export const TransactionReportPage: React.FC<TransactionReportPageProps> = ({ cu
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
             <DateRangeSelector
               startDate={startDate}
               endDate={endDate}
@@ -85,9 +90,13 @@ export const TransactionReportPage: React.FC<TransactionReportPageProps> = ({ cu
           </form>
         </div>
 
-        {transactions.length > 0 && (
+        {loading ? (
+          <LoadingSpinner />
+        ) : hasSearched && transactions.length === 0 ? (
+          <EmptyState message="هیچ تراکنشی در این بازه زمانی یافت نشد" />
+        ) : transactions.length > 0 ? (
           <TransactionTable transactions={transactions} />
-        )}
+        ) : null}
       </div>
     </div>
   );
