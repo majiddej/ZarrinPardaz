@@ -8,6 +8,9 @@ import { DateRangeSelector } from '../components/reports/DateRangeSelector';
 import { TransactionTable } from '../components/reports/TransactionTable';
 import { LoadingSpinner } from '../components/animations/LoadingSpinner';
 import { EmptyState } from '../components/animations/EmptyState';
+import DatePicker from "react-multi-date-picker"
+import persian from "react-date-object/calendars/persian"
+import persian_fa from "react-date-object/locales/persian_fa"
 
 interface TransactionReportPageProps {
   customers: Customer[];
@@ -25,7 +28,7 @@ export const TransactionReportPage: React.FC<TransactionReportPageProps> = ({ cu
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
- const [selectedDay, setSelectedDay] = useState(null);
+    const [value, setValue] = useState(new Date())
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,6 +68,13 @@ export const TransactionReportPage: React.FC<TransactionReportPageProps> = ({ cu
           )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+                <div style={{ direction: "rtl" }}>
+                    <DatePicker
+                        calendar={persian}
+                        locale={persian_fa}
+                        calendarPosition="bottom-right"
+                    />
+                </div>
             <DateRangeSelector
               startDate={startDate}
               endDate={endDate}
